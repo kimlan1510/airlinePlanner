@@ -53,6 +53,21 @@ namespace AirlinePlanner
       Assert.Equal(testFlights, foundFlights);
     }
 
+    [Fact]
+    public void Test_Update_UpdatesFlightsInDatabase()
+    {
+      //Arrange
+      Flights testFlight = new Flights("Seattle", "New York", "today", "tomorrow", "on time");
+      testFlight.Save();
+      string new_flying_from = "Portland";
+      //Act
+      testFlight.Update("Portland", "New York", "today", "tomorrow", "on time");
+      string result =testFlight.GetFlyingFrom();
+
+      //Assert
+      Assert.Equal(new_flying_from, result);
+    }
+
 
 
     public void Dispose()

@@ -174,32 +174,32 @@ namespace AirlinePlanner
 
     public void Update(string flying_from, string flying_to, string depart, string arrival, string status)
     {
-     SqlConnection conn = DB.Connection();
-     conn.Open();
+      SqlConnection conn = DB.Connection();
+      conn.Open();
 
-     SqlCommand cmd = new SqlCommand("UPDATE flights SET (flying_from, flying_to, depart, arrival, status) = (@flying_from, @flying_to, @depart, @arrival, @status) WHERE id = @Id;", conn);
+      SqlCommand cmd = new SqlCommand("UPDATE flights SET flying_from = @flying_from, flying_to = @flying_to, depart = @depart, arrival = @arrival, status = @status WHERE id = @Id;", conn);
 
-     SqlParameter flyingFromPara = new SqlParameter("@flying_from", flying_from);
-     SqlParameter flyingToPara = new SqlParameter("@flying_to", flying_to);
-     SqlParameter departPara = new SqlParameter("@depart", depart);
-     SqlParameter arrivalPara = new SqlParameter("@arrival", arrival);
-     SqlParameter statusPata = new SqlParameter("@status", status);
-     SqlParameter idPara = new SqlParameter("@Id", this.GetId());
+      SqlParameter flyingFromPara = new SqlParameter("@flying_from", flying_from);
+      SqlParameter flyingToPara = new SqlParameter("@flying_to", flying_to);
+      SqlParameter departPara = new SqlParameter("@depart", depart);
+      SqlParameter arrivalPara = new SqlParameter("@arrival", arrival);
+      SqlParameter statusPata = new SqlParameter("@status", status);
+      SqlParameter idPara = new SqlParameter("@Id", this.GetId());
 
-     cmd.Parameters.Add(flyingFromPara);
-     cmd.Parameters.Add(flyingToPara);
-     cmd.Parameters.Add(departPara);
-     cmd.Parameters.Add(arrivalPara);
-     cmd.Parameters.Add(statusPata);
-     cmd.Parameters.Add(idPara);
+      cmd.Parameters.Add(flyingFromPara);
+      cmd.Parameters.Add(flyingToPara);
+      cmd.Parameters.Add(departPara);
+      cmd.Parameters.Add(arrivalPara);
+      cmd.Parameters.Add(statusPata);
+      cmd.Parameters.Add(idPara);
 
-     this._flying_from = flying_from;
-     this._flying_to = flying_to;
-     this._depart = depart;
-     this._arrival = arrival;
-     this._status = status;
-     cmd.ExecuteNonQuery();
-     conn.Close();
+      this._flying_from = flying_from;
+      this._flying_to = flying_to;
+      this._depart = depart;
+      this._arrival = arrival;
+      this._status = status;
+      cmd.ExecuteNonQuery();
+      conn.Close();
     }
 
 
