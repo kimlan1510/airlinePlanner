@@ -72,6 +72,52 @@ namespace AirlinePlanner
       Assert.Equal(testAirlinesList, resultAirlines);
     }
 
+    [Fact]
+    public void Test_AddFlights_AddsFlightsToAirlines()
+    {
+     //Arrange
+     Airlines testAirlines = new Airlines("eva");
+     testAirlines.Save();
+
+     Flights testFlights = new Flights("portland", "New York", "today", "tomorrow", "on time");
+     testFlights.Save();
+
+     Flights testFlights2 = new Flights("Seattle", "New York", "today", "tomorrow", "on time");
+     testFlights2.Save();
+
+     //Act
+     testAirlines.AddFlights(testFlights);
+     testAirlines.AddFlights(testFlights2);
+
+     List<Flights> result = testAirlines.GetFlights();
+     List<Flights> testList = new List<Flights>{testFlights, testFlights2};
+
+     //Assert
+     Assert.Equal(testList, result);
+    }
+
+    [Fact]
+    public void GetFlights_ReturnsAllAirlinesFlights_TaskList()
+    {
+     //Arrange
+     Airlines testAirlines = new Airlines("eva");
+     testAirlines.Save();
+
+     Flights testFlights1 = new Flights("portland", "New York", "today", "tomorrow", "on time");
+     testFlights1.Save();
+
+     Flights testFlights2 = new Flights("Seattle", "New York", "today", "tomorrow", "on time");
+     testFlights2.Save();
+
+     //Act
+     testAirlines.AddFlights(testFlights1);
+     List<Flights> savedFlights = testAirlines.GetFlights();
+     List<Flights> testList = new List<Flights> {testFlights1};
+
+     //Assert
+     Assert.Equal(testList, savedFlights);
+    }
+
 
     public void Dispose()
     {

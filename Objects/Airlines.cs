@@ -146,16 +146,70 @@ namespace AirlinePlanner
 
       SqlCommand cmd = new SqlCommand("INSERT INTO summary (airline_services_id, flights_id) VALUES (@AirlineId, @FlightsId);", conn);
 
-      SqlParameter categoryIdParameter = new SqlParameter("@AirlineId", this.GetId());
-      SqlParameter taskIdParameter = new SqlParameter( "@FlightsId", newFlights.GetId());
+      SqlParameter airlineIdParameter = new SqlParameter("@AirlineId", this.GetId());
+      SqlParameter flightIdParameter = new SqlParameter( "@FlightsId", newFlights.GetId());
 
-      cmd.Parameters.Add(categoryIdParameter);
-      cmd.Parameters.Add(taskIdParameter);
+      cmd.Parameters.Add(airlineIdParameter);
+      cmd.Parameters.Add(flightIdParameter);
       cmd.ExecuteNonQuery();
       if (conn != null)
       {
        conn.Close();
       }
+    }
+
+    public List<Flights> GetFlights()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT flights_id FROM summary WHERE airline_services_id = @airline_id;", conn);
+      SqlParameter airlineIdParameter = new SqlParameter("@airline_Id", this.GetId());
+
+      cmd.Parameters.Add(airlineIdParameter);
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      List<int> flightsId = new List<int> {};
+      while(rdr.Read())
+      {
+        int flightId = rdr.GetInt32(0);
+        flightsId.Add(flightId);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+
+      List<Flights> allFlights = new List<Flights> {};
+      foreach (int flightId in flightsId)
+      {
+        SqlCommand flightQuery = new SqlCommand("SELECT * FROM flights WHERE id = @FlightsId;", conn);
+
+        SqlParameter flightIdParameter = new SqlParameter("@FlightsId", flightId);
+
+        flightQuery.Parameters.Add(flightIdParameter);
+        SqlDataReader queryReader = flightQuery.ExecuteReader();
+        while(queryReader.Read())
+        {
+              int thisFlightsId = queryReader.GetInt32(0);
+              string flying_from = queryReader.GetString(1);
+              string flying_to = queryReader.GetString(2);
+              string depart = queryReader.GetString(3);
+              string arrival = queryReader.GetString(4);
+              string status = queryReader.GetString(5);
+              Flights foundFlights = new Flights(flying_from, flying_to, depart, arrival, status, thisFlightsId);
+              allFlights.Add(foundFlights);
+        }
+        if (queryReader != null)
+        {
+          queryReader.Close();
+        }
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return allFlights;
     }
 
 
