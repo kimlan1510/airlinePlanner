@@ -52,24 +52,24 @@ namespace AirlinePlanner
     }
 
     [Fact]
-    public void Delete_DeletesAirlinesFromDatabase_AirlinesList()
+    public void Delete_DeletesAirlinesAssociationsFromDatabase_AirlineList()
     {
       //Arrange
-      string name1 = "eva";
-      Airlines testAirlines1 = new Airlines(name1);
-      testAirlines1.Save();
+      Flights testFlights = new Flights("portland", "New York", "today", "tomorrow", "on time");
+      testFlights.Save();
 
-      string name2 = "delta";
-      Airlines testAirlines2 = new Airlines(name2);
-      testAirlines2.Save();
+      Airlines testAirlines = new Airlines("eva");
+      testAirlines.Save();
 
       //Act
-      testAirlines1.Delete();
-      List<Airlines> resultAirlines = Airlines.GetAll();
-      List<Airlines> testAirlinesList = new List<Airlines> {testAirlines2};
+      testAirlines.AddFlights(testFlights);
+      testAirlines.Delete();
+
+      List<Airlines> resultFlightsCategories = testFlights.GetAirlines();
+      List<Airlines> testFlightsCategories = new List<Airlines> {};
 
       //Assert
-      Assert.Equal(testAirlinesList, resultAirlines);
+      Assert.Equal(testFlightsCategories, resultFlightsCategories);
     }
 
     [Fact]

@@ -127,12 +127,12 @@ namespace AirlinePlanner
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("DELETE FROM airline_services WHERE id = @Id;", conn);
-
-      SqlParameter airlineIdParameter = new SqlParameter("@id", this.GetId());
+      SqlCommand cmd = new SqlCommand("DELETE FROM airline_services WHERE id = @airlineId; DELETE FROM summary WHERE airline_services_id = @airlineId;", conn);
+      SqlParameter airlineIdParameter = new SqlParameter("@airlineId", this.GetId());
 
       cmd.Parameters.Add(airlineIdParameter);
       cmd.ExecuteNonQuery();
+
       if (conn != null)
       {
         conn.Close();

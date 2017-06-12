@@ -207,43 +207,92 @@ namespace AirlinePlanner
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("DELETE FROM flights WHERE id = @Id;", conn);
+      SqlCommand cmd = new SqlCommand("DELETE FROM flights WHERE id = @flightId; DELETE FROM summary WHERE flights_id = @flightId;", conn);
+      SqlParameter flightIdParameter = new SqlParameter("@flightId", this.GetId());
 
-      SqlParameter flightIdParam = new SqlParameter("@Id", this.GetId());
-
-      cmd.Parameters.Add(flightIdParam);
+      cmd.Parameters.Add(flightIdParameter);
       cmd.ExecuteNonQuery();
 
       if (conn != null)
       {
-        conn.Close();
+       conn.Close();
       }
     }
 
-    // public void AddAirlineService(AirlineService newCategory)
-    // {
-    //   SqlConnection conn = DB.Connection();
-    //   conn.Open();
-    //
-    //   SqlCommand cmd = new SqlCommand("INSERT INTO categories_tasks (category_id, task_id) VALUES (@CategoryId, @TaskId);", conn);
-    //
-    //   SqlParameter categoryIdParameter = new SqlParameter();
-    //   categoryIdParameter.ParameterName = "@CategoryId";
-    //   categoryIdParameter.Value = newCategory.GetId();
-    //   cmd.Parameters.Add(categoryIdParameter);
-    //
-    //   SqlParameter taskIdParameter = new SqlParameter();
-    //   taskIdParameter.ParameterName = "@TaskId";
-    //   taskIdParameter.Value = this.GetId();
-    //   cmd.Parameters.Add(taskIdParameter);
-    //
-    //   cmd.ExecuteNonQuery();
-    //
-    //   if (conn != null)
-    //   {
-    //     conn.Close();
-    //   }
-    // }
+    public void AddAirlines(Airlines newAirlines)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("INSERT INTO summary (airline_services_id, flights_id) VALUES (@AirlinesId, @FlightId);", conn);
+
+      SqlParameter AirlinesIdParameter = new SqlParameter("@AirlinesId", newAirlines.GetId());
+      SqlParameter flightsIdParameter = new SqlParameter("@FlightId", this.GetId());
+
+      cmd.Parameters.Add(AirlinesIdParameter);
+      cmd.Parameters.Add(flightsIdParameter);
+
+      cmd.ExecuteNonQuery();
+
+      if (conn != null)
+      {
+       conn.Close();
+      }
+    }
+
+    public List<Airlines> GetAirlines()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT airline_services_id FROM summary WHERE flights_id = @Id;", conn);
+
+      SqlParameter flightIdParameter = new SqlParameter("@Id", this.GetId());
+
+      cmd.Parameters.Add(flightIdParameter);
+
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      List<int> airlineIds = new List<int>{};
+      while (rdr.Read())
+      {
+        int airlineId = rdr.GetInt32(0);
+        airlineIds.Add(airlineId);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+
+      List<Airlines> AllAirlines = new List<Airlines> {};
+
+      foreach (int airlineId in airlineIds)
+      {
+        SqlCommand airlineQuery = new SqlCommand("SELECT * FROM airline_services WHERE id = @AirlinesId;", conn);
+
+        SqlParameter airlineIdParameter = new SqlParameter("@AirlinesId", airlineId);
+
+        airlineQuery.Parameters.Add(airlineIdParameter);
+
+        SqlDataReader queryReader = airlineQuery.ExecuteReader();
+        while (queryReader.Read())
+        {
+          int thisAirlinesId = queryReader.GetInt32(0);
+          string airlineName = queryReader.GetString(1);
+          Airlines foundAirlines = new Airlines(airlineName, thisAirlinesId);
+          AllAirlines.Add(foundAirlines);
+        }
+        if (queryReader != null)
+        {
+          queryReader.Close();
+        }
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return AllAirlines;
+    }
 
 
     public static void DeleteAll()

@@ -68,6 +68,69 @@ namespace AirlinePlanner
       Assert.Equal(new_flying_from, result);
     }
 
+    [Fact]
+    public void AddAirlines_AddsAirlinesToFlights_AirlinesList()
+    {
+      //Arrange
+      Flights testFlights = new Flights("Seattle", "New York", "today", "tomorrow", "on time");
+      testFlights.Save();
+
+      Airlines testAirlines = new Airlines("eva");
+      testAirlines.Save();
+
+      //Act
+      testFlights.AddAirlines(testAirlines);
+
+      List<Airlines> result = testFlights.GetAirlines();
+      List<Airlines> testList = new List<Airlines>{testAirlines};
+
+      //Assert
+      Assert.Equal(testList, result);
+    }
+
+    [Fact]
+    public void GetAirlines_ReturnsAllFlightsAirlines_AirlineList()
+    {
+      //Arrange
+      Flights testFlights = new Flights("Seattle", "New York", "today", "tomorrow", "on time");
+      testFlights.Save();
+
+      Airlines testAirlines1 = new Airlines("eva");
+      testAirlines1.Save();
+
+      Airlines testAirlines2 = new Airlines("delta");
+      testAirlines2.Save();
+
+      //Act
+      testFlights.AddAirlines(testAirlines1);
+      List<Airlines> result = testFlights.GetAirlines();
+      List<Airlines> testList = new List<Airlines> {testAirlines1};
+
+      //Assert
+      Assert.Equal(testList, result);
+    }
+
+    [Fact]
+    public void Delete_DeletesFlightsAssociationsFromDatabase_FlightsList()
+    {
+      //Arrange
+      Airlines testAirlines = new Airlines("eva");
+      testAirlines.Save();
+
+      Flights testFlights = new Flights("Seattle", "New York", "today", "tomorrow", "on time");
+      testFlights.Save();
+
+      //Act
+      testFlights.AddAirlines(testAirlines);
+      testFlights.Delete();
+
+      List<Flights> resultAirlinesFlights = testAirlines.GetFlights();
+      List<Flights> testAirlinesFlights = new List<Flights> {};
+
+      //Assert
+      Assert.Equal(testAirlinesFlights, resultAirlinesFlights);
+    }
+
 
 
 
