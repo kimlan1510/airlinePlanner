@@ -122,6 +122,42 @@ namespace AirlinePlanner
      return foundAirlines;
     }
 
+    public void Delete()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("DELETE FROM airline_services WHERE id = @Id;", conn);
+
+      SqlParameter airlineIdParameter = new SqlParameter("@id", this.GetId());
+
+      cmd.Parameters.Add(airlineIdParameter);
+      cmd.ExecuteNonQuery();
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+
+    public void AddFlights(Flights newFlights)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("INSERT INTO summary (airline_services_id, flights_id) VALUES (@AirlineId, @FlightsId);", conn);
+
+      SqlParameter categoryIdParameter = new SqlParameter("@AirlineId", this.GetId());
+      SqlParameter taskIdParameter = new SqlParameter( "@FlightsId", newFlights.GetId());
+
+      cmd.Parameters.Add(categoryIdParameter);
+      cmd.Parameters.Add(taskIdParameter);
+      cmd.ExecuteNonQuery();
+      if (conn != null)
+      {
+       conn.Close();
+      }
+    }
+
 
 
 

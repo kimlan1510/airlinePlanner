@@ -51,6 +51,27 @@ namespace AirlinePlanner
       Assert.Equal(testAirlines, foundAirlines);
     }
 
+    [Fact]
+    public void Delete_DeletesAirlinesFromDatabase_AirlinesList()
+    {
+      //Arrange
+      string name1 = "eva";
+      Airlines testAirlines1 = new Airlines(name1);
+      testAirlines1.Save();
+
+      string name2 = "delta";
+      Airlines testAirlines2 = new Airlines(name2);
+      testAirlines2.Save();
+
+      //Act
+      testAirlines1.Delete();
+      List<Airlines> resultAirlines = Airlines.GetAll();
+      List<Airlines> testAirlinesList = new List<Airlines> {testAirlines2};
+
+      //Assert
+      Assert.Equal(testAirlinesList, resultAirlines);
+    }
+
 
     public void Dispose()
     {
