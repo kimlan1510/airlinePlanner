@@ -202,6 +202,49 @@ namespace AirlinePlanner
       conn.Close();
     }
 
+    public void Delete()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("DELETE FROM flights WHERE id = @Id;", conn);
+
+      SqlParameter flightIdParam = new SqlParameter("@Id", this.GetId());
+
+      cmd.Parameters.Add(flightIdParam);
+      cmd.ExecuteNonQuery();
+
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+
+    // public void AddAirlineService(AirlineService newCategory)
+    // {
+    //   SqlConnection conn = DB.Connection();
+    //   conn.Open();
+    //
+    //   SqlCommand cmd = new SqlCommand("INSERT INTO categories_tasks (category_id, task_id) VALUES (@CategoryId, @TaskId);", conn);
+    //
+    //   SqlParameter categoryIdParameter = new SqlParameter();
+    //   categoryIdParameter.ParameterName = "@CategoryId";
+    //   categoryIdParameter.Value = newCategory.GetId();
+    //   cmd.Parameters.Add(categoryIdParameter);
+    //
+    //   SqlParameter taskIdParameter = new SqlParameter();
+    //   taskIdParameter.ParameterName = "@TaskId";
+    //   taskIdParameter.Value = this.GetId();
+    //   cmd.Parameters.Add(taskIdParameter);
+    //
+    //   cmd.ExecuteNonQuery();
+    //
+    //   if (conn != null)
+    //   {
+    //     conn.Close();
+    //   }
+    // }
+
 
     public static void DeleteAll()
     {
