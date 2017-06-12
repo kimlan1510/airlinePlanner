@@ -1,0 +1,12 @@
+@{
+  Layout = "Shared/_Layout.cshtml";
+}
+<h1>Airline Planner</h1>
+<h2>Add new airline</h2>
+<hr />
+<form action="/airlines/new" method="post">
+  <label for="name">airline:</label>
+  <input id="name" name="name" type="text">
+  <button type="submit">Add</button>
+</form>
+<h4><a href="/">Return home</a></h4>

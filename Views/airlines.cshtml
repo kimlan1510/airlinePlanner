@@ -1,0 +1,23 @@
+@{
+  Layout = "Shared/_Layout.cshtml";
+}
+<div class="container">
+  <h1>Airline Planner</h1>
+  <hr />
+  <h2>Airlines:</h2>
+  @if (Model.Count != 0)
+  {
+    <ul>
+      @foreach (var airline in Model)
+      {
+        <div class="row">
+          <div class="col-md-12">
+            <a href="/airlines/@airline.GetId()">@airline.GetName()</a>
+          </div>
+        </div>
+      }
+    </ul>
+  }
+  <h4><a href="/airlines/new">Add a new airline</a></h4>
+  <h4><a href="/">Return home</a></h4>
+</div>

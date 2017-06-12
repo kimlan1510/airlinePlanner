@@ -1,0 +1,25 @@
+@{
+  Layout = "Shared/_Layout.cshtml";
+}
+<h1>Add a new flight</h1>
+<form action="/flights/new" method="post">
+  <label for="flying-from">flying from</label>
+  <input id="flying-from" name="flying-from" type="text">
+  <label for="flying-to">flying to</label>
+  <input id="flying-to" name="flying-to" type="text">
+  <label for="depart">depart</label>
+  <input id="depart" name="depart" type="text">
+  <label for="arrive">arrive</label>
+  <input id="arrive" name="arrive" type="text">
+  <label for="flying-from">status</label>
+  <select name="status">
+    <option value="one time">on time</option>
+    <option value="delayed">delayed</option>
+    <option value="cancelled">cancelled</option>
+    <option value="complete">complete</option>
+
+  </select>
+  <button type="submit" name="button">save</button>
+</form>
+<p><a href="/">Back home</a></p>
+<p><a href="/tasks">View all flights</a></p>

@@ -1,0 +1,55 @@
+@{
+  Layout = "Shared/_Layout.cshtml";
+}
+<div class="container">
+  <h1>Airline Planner</h1>
+  <hr />
+  <h2>Flights:</h2>
+  @if (Model.Count != 0)
+  {
+    <div class="row">
+      <div class="col-md-2">
+        <h3>Flight ID</h3>
+      </div>
+      <div class="col-md-2">
+        <h3>Flying From</h3>
+      </div>
+      <div class="col-md-2">
+        <h3>Flying To</h3>
+      </div>
+      <div class="col-md-2">
+        <h3>Departure</h3>
+      </div>
+      <div class="col-md-2">
+        <h3>Arrival</h3>
+      </div>
+      <div class="col-md-2">
+        <h3>Status</h3>
+      </div>
+    @foreach (var flight in Model)
+    {
+      <div class="col-md-2">
+      <a href='/flights/@flight.GetId()'>@flight.GetId()</a>
+      </div>
+      <div class="col-md-2">
+      <p>@flight.GetFlyingFrom()</p>
+      </div>
+      <div class="col-md-2">
+      <p>@flight.GetFlyingTo()</p>
+      </div>
+      <div class="col-md-2">
+      <p>@flight.GetDepart()</p>
+      </div>
+      <div class="col-md-2">
+      <p>@flight.GetArrivalDate()</p>
+      </div>
+      <div class="col-md-2">
+      <p>@flight.GetStatus()<p>
+      </div>
+    }
+
+    </div>
+  }
+  <h4><a href="/flights/new">Add a new flight</a></h4>
+  <h4><a href="/">Return home</a></h4>
+</div>
