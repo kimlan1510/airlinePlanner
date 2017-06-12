@@ -40,6 +40,6 @@ namespace AirlinePlanner
   }
   public static class DBConfiguration
   {
-      public static string ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=airlines;Integrated Security=SSPI;";
+      public static string ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=airline;Integrated Security=SSPI;";
   }
 }
