@@ -1,0 +1,30 @@
+@{
+  Layout = "Shared/_Layout.cshtml";
+}
+<h1>Airline Planner</h1>
+<h2>Flight: @Model["flight"].GetFlyingFrom()</h2>
+<h2>To: @Model["flight"].GetFlyingTo()</h2>
+<hr />
+@if (@Model["flightAirline"].Count != 0)
+{
+  <h4>These airlines offer this flight</h4>
+  <ul>
+    @foreach (var airline in @Model["flightAirline"])
+    {
+      <li>@airline.GetName()</li>
+    }
+  </ul>
+}
+<h4>Add an airline that offer that flight:</h4>
+<form action='/flight/add_airline' method='post'>
+  <input id='flight-id' name='flight-id' type='hidden' value='@Model["flight"].GetId()'>
+  <label for='airline-id'>Select a airline</label>
+  <select id='airline-id' name='airline-id' type='text'>
+    @foreach (var airline in @Model["allAirlines"])
+    {
+      <option value='@airline.GetId()'>@airline.GetName()</option>
+    }
+  </select>
+  <button type='submit'>Add</button>
+</form>
+<p><a href="/">Return to Main Page</a></p>

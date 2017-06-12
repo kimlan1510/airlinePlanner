@@ -1,0 +1,68 @@
+@{
+  Layout = "Shared/_Layout.cshtml";
+}
+<div class="container">
+  <h1>Airline Planner</h1>
+  <h2>Airline: @Model["airline"].GetName()</h2>
+  <hr />
+  @if (@Model["airlineFlights"].Count != 0)
+  {
+    <div class="row">
+    <h4>Here are all the flights this airline has to offer:</h4>
+    <div class="col-md-2">
+      <h3>Flight ID</h3>
+    </div>
+    <div class="col-md-2">
+      <h3>Flying From</h3>
+    </div>
+    <div class="col-md-2">
+      <h3>Flying To</h3>
+    </div>
+    <div class="col-md-2">
+      <h3>Departure</h3>
+    </div>
+    <div class="col-md-2">
+      <h3>Arrival</h3>
+    </div>
+    <div class="col-md-2">
+      <h3>Status</h3>
+    </div>
+    @foreach (var flight in @Model["airlineFlights"])
+    {
+      <div class="col-md-2">
+      <a href='/flights/@flight.GetId()'>@flight.GetId()</a>
+      </div>
+      <div class="col-md-2">
+      <p>@flight.GetFlyingFrom()</p>
+      </div>
+      <div class="col-md-2">
+      <p>@flight.GetFlyingTo()</p>
+      </div>
+      <div class="col-md-2">
+      <p>@flight.GetDepart()</p>
+      </div>
+      <div class="col-md-2">
+      <p>@flight.GetArrivalDate()</p>
+      </div>
+      <div class="col-md-2">
+      <p>@flight.GetStatus()<p>
+      </div>
+    }
+    </div>
+
+  }
+  <h4>Add a flight to this airline:</h4>
+  <form action='/airline/add_flight' method='post'>
+    <input id='airline-id' name='airline-id' type='hidden' value='@Model["airline"].GetId()'>
+    <label for='flight-id'>Select a flight</label>
+    <select id='flight-id' name='flight-id' type='text'>
+      @foreach (var flight in @Model["allFlights"])
+      {
+        <option value='@flight.GetId()'>Flying from: @flight.GetFlyingFrom(), Flying to: @flight.GetFlyingTo</option>
+      }
+    </select>
+    <button type='submit'>Add</button>
+  </form>
+  <p><a href="/">Return to Main Page</a></p>
+
+</div>

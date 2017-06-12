@@ -36,6 +36,31 @@ namespace AirlinePlanner
         newAirline.Save();
         return View["success.cshtml"];
       };
+
+      Get["flights/{id}"] = parameters => {
+        Dictionary<string, object> model = new Dictionary<string, object>();
+        Flights SelectedFlights = Flights.Find(parameters.id);
+        List<Airlines> FlightsAirlines = SelectedFlights.GetAirlines();
+        List<Airlines> AllAirlines = Airlines.GetAll();
+        model.Add("flight", SelectedFlights);
+        model.Add("flightAirline", FlightsAirlines);
+        model.Add("allAirlines", AllAirlines);
+        return View["flight.cshtml", model];
+      };
+
+      Post["flight/add_airline"] = _ => {
+        Airlines airline = Airlines.Find(Request.Form["airline-id"]);
+        Flights flight = Flights.Find(Request.Form["flight-id"]);
+        flight.AddAirlines(airline);
+        return View["success.cshtml"];
+      };
+
+      Post["airline/add_flight"] = _ => {
+        Airlines airline = Airlines.Find(Request.Form["airline-id"]);
+        Flights flight = Flights.Find(Request.Form["flight-id"]);
+        airline.AddFlights(flight);
+        return View["success.cshtml"];
+      };
     }
   }
 }
